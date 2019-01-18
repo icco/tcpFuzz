@@ -2,11 +2,11 @@ package tcpfuzz
 
 import (
 	"fmt"
+	"io"
 	"math/rand"
-	"net"
 )
 
-func WriteRand(c net.Conn) error {
+func WriteRand(c io.Writer) error {
 	b := make([]byte, 1024*1024)
 	i, err := rand.Read(b)
 	if i < len(b) {
