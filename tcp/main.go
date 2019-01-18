@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"net"
 	"os"
 	"time"
+
+	"github.com/icco/tcpfuzz"
 )
 
 func main() {
@@ -32,22 +33,11 @@ func main() {
 			defer c.Close()
 			log.Println("connection from", c.RemoteAddr())
 			c.SetDeadline(time.Now().Add(10 * time.Second))
-			WriteRand(c)
+			err := tcpfuzz.WriteRand(c)
+			if err != nil {
+				log.Print(err)
+			}
 			return
 		}(conn)
 	}
-}
-
-func WriteRand(c net.Conn) {
-	b := make([]byte, 1024*1024)
-	i, err := rand.Read(b)
-	if i < len(b) {
-		log.Printf("could only get %d bytes of random", i)
-	}
-
-	if err != nil {
-		log.Print(err)
-	}
-
-	c.Write(b)
 }

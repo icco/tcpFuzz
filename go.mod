@@ -1,1 +1,1 @@
-module github.com/icco/tcpFuzz
+module github.com/icco/tcpfuzz
